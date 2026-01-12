@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UMI | Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;500&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #ffffff;
+            --text-main: #1a1a1a;
+            --accent: #f0f0f0;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+        .serif { font-family: 'Cormorant Garamond', serif; }
+        
+        /* --- Hamburger Animation --- */
+        #menu-btn .line {
+            transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), background-color 0.3s;
+        }
+        #menu-btn.open .line-1 { transform: translateY(5px) rotate(45deg); background-color: white; }
+        #menu-btn.open .line-2 { transform: scaleX(0); background-color: white; }
+        #menu-btn.open .line-3 { transform: translateY(-5px) rotate(-45deg); background-color: white; }
+
+        /* --- Fullscreen Menu with Clip Path --- */
+        #nav-menu {
+            clip-path: circle(0% at calc(100% - 40px) 40px);
+            transition: clip-path 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+            visibility: hidden;
+        }
+        #nav-menu.active {
+            clip-path: circle(150% at calc(100% - 40px) 40px);
+            visibility: visible;
+        }
+
+        /* 既存のクラス */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        .work-link {
+            display: block;
+            overflow: hidden;
+            position: relative;
+            background: #000;
+        }
+        .work-link img {
+            transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1), opacity 0.6s ease;
+        }
+        .work-link:hover img {
+            transform: scale(1.05);
+            opacity: 0.8;
+        }
+        .work-link::before {
+    content: 'VIEW MORE';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, calc(-50% + 20px)); /* 初期位置は少し下 */
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.4em;
+    z-index: 2;
+    opacity: 0;
+    transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+    pointer-events: none;
+    border-bottom: 1px solid transparent;
+}
+
+/* ホバー時の挙動 */
+.work-link:hover::before {
+    opacity: 1;
+    transform: translate(-50%, -50%); /* 中央へ浮き上がる */
+    border-bottom: 1px solid white;
+    padding-bottom: 4px;
+}
+
+/* 背景を少し暗くして文字を読みやすくする（既存のimgへの干渉） */
+.work-link:hover img {
+    filter: brightness(0.5) scale(1.05);
+}
+    </style>
+</head>
+<body>
+
+    <nav class="fixed top-0 w-full z-[100] px-6 py-8 flex justify-end">
+        <button id="menu-btn" class="flex flex-col justify-between h-[12px] w-8 z-[110] focus:outline-none">
+            <span class="line line-1 w-full h-[2px] bg-black"></span>
+            <span class="line line-2 w-full h-[2px] bg-black mt-1"></span>
+            <span class="line line-3 w-full h-[2px] bg-black mt-1"></span>
+        </button>
+    </nav>
+
+    <div id="nav-menu" class="fixed inset-0 bg-black/95 backdrop-blur-xl z-[90] flex items-center justify-center">
+        <div class="flex flex-col items-center gap-10 text-center">
+            <a href="index.html" class="menu-link text-white text-4xl md:text-6xl serif font-light tracking-widest hover:text-gray-400 transition-colors">HOME</a>
+            <a href="index.html#works" class="menu-link text-white text-4xl md:text-6xl serif font-light tracking-widest hover:text-gray-400 transition-colors">WORKS</a>
+            <a href="card.html" class="menu-link text-white text-2xl md:text-3xl serif font-light tracking-widest hover:text-gray-400 transition-colors mt-4">CARD</a>
+            <a href="website.html" class="menu-link text-white text-2xl md:text-3xl serif font-light tracking-widest hover:text-gray-400 transition-colors mt-4">WEBSITE</a>
+            <a href="design.html" class="menu-link text-white text-2xl md:text-3xl serif font-light tracking-widest hover:text-gray-400 transition-colors mt-4">DESIGN</a>
+
+            <div class="flex gap-6 mt-10">
+                <a href="#" class="text-white/50 text-xs tracking-widest hover:text-white transition-colors">INSTAGRAM</a>
+                <a href="#" class="text-white/50 text-xs tracking-widest hover:text-white transition-colors">TWITTER</a>
+            </div>
+        </div>
+    </div>
+
+    <header class="h-screen flex items-center justify-center bg-white">
+        <h1 class="text-6xl md:text-8xl tracking-[0.5em] serif font-light reveal active" id="hero-title">
+            UMI
+        </h1>
+    </header>
+
+    <section id="works" class="bg-[#e5e5e5] py-24 px-6 md:px-0">
+        <div class="max-w-screen-md mx-auto">
+            <h2 class="text-center text-4xl md:text-5xl tracking-[0.4em] serif mb-2 reveal">WORKS</h2>
+            <div class="h-[1px] w-12 bg-black mx-auto mb-20 reveal"></div>
+
+            <div class="mb-32">
+                <div class="text-center mb-12 reveal">
+                    <p class="text-xl tracking-[0.5em] mb-1 uppercase">Card</p>
+                    <p class="text-[10px] text-gray-500">名刺</p>
+                </div>
+                <div class="bg-gray-300 w-full aspect-video flex items-center justify-center reveal overflow-hidden">
+                    <a href="card.html" class="work-link w-full h-full">
+                        <img src="img/11.PNG" alt="Website Preview" class="w-full h-full object-cover">
+                    </a>
+                </div>
+            </div>
+            <div class="mb-32">
+                <div class="text-center mb-12 reveal">
+                    <p class="text-xl tracking-[0.5em] mb-1 uppercase">Website</p>
+                    <p class="text-[10px] text-gray-500">ウェブサイト</p>
+                </div>
+                <div class="bg-gray-300 w-full aspect-video flex items-center justify-center reveal overflow-hidden">
+                    <a href="website.html" class="work-link w-full h-full">
+                        <img src="img/スクリーンショット 2026-01-12 19.05.17.png" alt="Website Preview" class="w-full h-full object-cover">
+                    </a>
+                </div>
+            </div>
+            <div class="mb-32">
+                <div class="text-center mb-12 reveal">
+                    <p class="text-xl tracking-[0.5em] mb-1 uppercase">design</p>
+                    <p class="text-[10px] text-gray-500">グラフィックデザイン</p>
+                </div>
+                <div class="bg-gray-300 w-full aspect-video flex items-center justify-center reveal overflow-hidden">
+                    <a href="design.html" class="work-link w-full h-full">
+                        <img src="img/2026.png" alt="Website Preview" class="w-full h-full object-cover">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-20 bg-white text-center">
+        <p class="text-[10px] tracking-[0.5em] text-gray-400">&copy; UMI ALL RIGHTS RESERVED.</p>
+    </footer>
+
+    <script>
+        // --- 1. Hamburger Menu Logic ---
+        const menuBtn = document.getElementById('menu-btn');
+        const navMenu = document.getElementById('nav-menu');
+        const menuLinks = document.querySelectorAll('.menu-link');
+
+        menuBtn.addEventListener('click', () => {
+            const isOpen = menuBtn.classList.toggle('open');
+            navMenu.classList.toggle('active');
+            
+            // GSAPでメニュー文字を浮かび上がらせる
+            if(isOpen) {
+                document.body.style.overflow = 'hidden'; // スクロール無効化
+                gsap.from(".menu-link", {
+                    y: 40,
+                    opacity: 0,
+                    duration: 0.6,
+                    stagger: 0.1,
+                    ease: "power3.out",
+                    delay: 0.4
+                });
+            } else {
+                document.body.style.overflow = ''; // スクロール有効化
+            }
+        });
+
+        // リンククリック時にメニューを閉じる
+        menuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menuBtn.classList.remove('open');
+                navMenu.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // --- 2. 既存のスクロール演出 ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // --- 3. Hero Kinetic Typography ---
+        gsap.registerPlugin(ScrollTrigger);
+        gsap.to("#hero-title", {
+            scrollTrigger: {
+                trigger: "header",
+                start: "top top",
+                end: "bottom top",
+                scrub: true
+            },
+            letterSpacing: "1.5em",
+            opacity: 0,
+            scale: 1.2,
+            ease: "none"
+        });
+    </script>
+</body>
+</html>

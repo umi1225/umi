@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UMI Portfolio | CARD</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;500&family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f7f7;
+            color: #1a1a1a;
+        }
+        .serif { font-family: 'Cormorant Garamond', serif; }
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        
+        ::-webkit-scrollbar { display: none; }
+
+        .image-container {
+            box-shadow: 0 20px 40px rgba(0,0,0,0.03);
+            background: #fff;
+            padding: 24px;
+            transition: transform 0.4s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="fixed top-0 left-0 z-50 p-8">
+        <a href="index.html" class="flex items-center gap-3 group">
+            <div class="w-10 h-10 border border-black rounded-full flex items-center justify-center group-hover:bg-black group-hover:text-white transition-all">
+                <span class="text-xs">←</span>
+            </div>
+            <span class="text-[10px] tracking-[0.4em] font-bold uppercase">Back</span>
+        </a>
+    </nav>
+
+    <main class="pt-40 pb-40 px-6 max-w-screen-md mx-auto">
+        
+        <header class="text-center mb-32 reveal active">
+            <p class="text-[10px] tracking-[0.6em] text-gray-400 mb-6 uppercase">Works / Card</p>
+            <h1 class="text-6xl md:text-8xl serif font-light tracking-[0.3em] mb-8">CARD</h1>
+            <div class="h-[1px] w-12 bg-black mx-auto mb-12"></div>
+            <p class="text-xs leading-relaxed max-w-xs mx-auto text-gray-500 tracking-widest">
+                business cards designed for various clients, showcasing unique styles and branding.
+            </p>
+        </header>
+
+        <section class="space-y-40">
+            <div class="reveal">
+                <div class="text-center mb-10">
+                    <p class="text-[10px] tracking-[0.4em] text-gray-400 mb-2 uppercase">Project 01</p>
+                    <h2 class="text-xl serif tracking-widest">URANO KATSUYA</h2>
+                </div>
+                <div class="image-container">
+                    <img src="img/card_qr 2.PNG" alt="Urano Card Front" class="w-full h-auto mb-6">
+                    <img src="img/11.PNG" alt="Urano Card Pattern" class="w-full h-auto">
+                </div>
+            </div>
+
+            <div class="reveal">
+                <div class="text-center mb-10">
+                    <p class="text-[10px] tracking-[0.4em] text-gray-400 mb-2 uppercase">Project 02</p>
+                    <h2 class="text-xl serif tracking-widest">SORA MOCHIZUKI</h2>
+                </div>
+                <div class="bg-black image-container">
+                    <img src="img/8.PNG" alt="Sora Card Front" class="w-full h-auto mb-6">
+                    <img src="img/9.PNG" alt="Sora Card Back" class="w-full h-auto">
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="py-20 bg-white text-center border-t border-gray-100">
+        <p class="text-[10px] tracking-[0.5em] text-gray-400 uppercase">&copy; UMI ALL RIGHTS RESERVED.</p>
+    </footer>
+
+    <script>
+        // Scroll Animation
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('active');
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Smooth GSAP Parallax for Images
+        gsap.registerPlugin(ScrollTrigger);
+        document.querySelectorAll('img').forEach(img => {
+            gsap.to(img, {
+                y: -15,
+                scrollTrigger: {
+                    trigger: img,
+                    start: "top bottom",
+                    scrub: 1
+                }
+            });
+        });
+    </script>
+</body>
+</html>
